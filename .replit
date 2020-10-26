@@ -1,0 +1,2 @@
+language = "c"
+run = "gcc Conversor.c -o Conversor\n./Conversor"
