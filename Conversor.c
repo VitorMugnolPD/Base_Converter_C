@@ -6,7 +6,8 @@ int baseInicial;
 int baseFinal;
 char numeroInicial[];
 char antesVirgula[] = " ";
-char depoisVirgula[];
+char depoisVirgula[] = " ";
+char resultadoFinal[] = "";
 char caracteres[26] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
 char caractere(int n)
@@ -22,18 +23,42 @@ void algumaParaDez()
   for(i = 0; i < sizeof(antesVirgula)/sizeof(antesVirgula[0]); i++)
   {
     if(isdigit(antesVirgula[i]))
-      strcat(antes, (char) antesVirgula[i]);
+    {
+      char nmrConvertidoChar[] = " ";
+      int nmr = (int) antesVirgula[i];
+      while(nmr != 0)
+      {
+        if(nmr < baseFinal)
+          nmr = (int) strcat((char[]) {nmr}, "0");
+        strcat(nmrConvertidoChar, (char[]) {nmr % baseFinal});
+        nmr -= (int) nmr / baseFinal;
+      }
+      strcat(antes, nmrConvertidoChar);
+    }
     else
     {
-    
       int n;
+      int nmr;
       for(n = 0; n < sizeof(caracteres); n++)
       {
         if(caracteres[n] == antesVirgula[i])
-          strcat(antes, (char) caracteres[n]);
+        {
+          nmr = n + 10;
+          break;
+        }
       }
+      char nmrConvertidoChar[] = " ";
+      while(nmr != 0)
+      {
+        if(nmr < baseFinal)
+          nmr = (int) strcat((char[]) {nmr}, "0");
+        strcat(nmrConvertidoChar, (char[]) {nmr % baseFinal});
+        nmr -= (int) nmr / baseFinal;
+      }
+      strcat(antes, nmrConvertidoChar);
     }
   }
+  strcat(resultadoFinal, antes);
 }
 
 void dezParaOutra()
@@ -56,9 +81,9 @@ void SepararPorVirgula(char* numero)
     int indiceAuxiliar;
     indice++;
     
-for(indiceAuxiliar=0;indice<sizeof(numero)/sizeof(numero[0]);indice++,indiceAuxiliar++)
+    for(indiceAuxiliar=0;indice<sizeof(numero)/sizeof(numero[0]);indice++,indiceAuxiliar++)
     {
-     depoisVirgula[indiceAuxiliar] = numero[indice]; 
+      depoisVirgula[indiceAuxiliar] = numero[indice]; 
     }
   }
 }
@@ -84,6 +109,8 @@ int main()
   fflush(stdin);
 
   SepararPorVirgula(&numeroInicial);
+  algumaParaDez();
+  printf("\nO resultado é: %s", resultadoFinal);
 
   return 0;
 }
