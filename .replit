@@ -1,2 +1,2 @@
 language = "c"
-run = "gcc Conversor.c -o Conversor\n./Conversor"
+run = "clear\ngcc -g main.c -o main -lm\n./main"
