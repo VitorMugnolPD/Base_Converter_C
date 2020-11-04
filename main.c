@@ -32,7 +32,7 @@ void separarPorVirgula(char numero[MAX])
   }
 }
 
-char getLetra(int numero)
+/*char getLetra(int numero)
 {
   return caracteres[numero - 10];
 }
@@ -45,29 +45,27 @@ int getNumero(char letra)
     if(caracteres[indice] == letra)
       return indice + 10;
   }
-}
+}*/
 
 double algumaParaDezAntes(char* numero, int base, int tamanho)
 {
   double ret = 0;
- // printf("%s\n",base);
-  //int tamanho = (int) sizeof(nmr) / sizeof(nmr[0]);
+
   int indice;
   for(indice = 0; indice < tamanho; indice++)
   {
     if(isdigit(numero[indice]))
     {
       ret = ret + (double) ((numero[indice]-48) * pow(base, tamanho - indice-1));
-     // printf("\nbatata: %lf",ret);
-     // printf("\nteste: %i",tamanho);
+
     }
     else
     {
       
-      int n = getNumero(numero[indice]);
-      ret = ret + (double) (n * pow(base, tamanho - indice-1));
+
+      ret = ret + (double) ((numero[indice]-55) * pow(base, tamanho - indice-1));
     }
-    //printf("\n%lf",ret);
+
   }
   return ret;
 }
@@ -75,8 +73,7 @@ double algumaParaDezAntes(char* numero, int base, int tamanho)
 double algumaParaDezDepois(char* numero, int base, int tamanho)
 {
   double ret = 0;
-  //char nmr[MAX] = {numero};
-  //int tamanho = (int) sizeof(nmr) / sizeof(nmr[0]);
+
   int indice;
   for(indice = 0; indice < tamanho; indice++)
   {
@@ -87,8 +84,7 @@ double algumaParaDezDepois(char* numero, int base, int tamanho)
     }
     else
     {
-      int n = getNumero(numero[indice]);
-      ret = ret + (double) (n * (1 / pow(base, indice + 1)));
+      ret = ret + (double) ((numero[indice]-55) * (1 / pow(base, indice + 1)));
        int a =0;
     }
   }
@@ -133,9 +129,6 @@ int main()
   scanf("%u",&baseFinal);
   fflush(stdin);
 
-  //printf("mr potato head: %u\n", baseInicial);
- // printf("mr batata cabeça: %s\n",numeroInicial);
-
   separarPorVirgula(numeroInicial);
 
   int tamanhoAntes = strlen(antesVirgula);
@@ -144,8 +137,6 @@ int main()
 
   double a = algumaParaDez(antesVirgula,depoisVirgula,baseInicial,tamanhoAntes,tamanhoDepois);
   printf("%lf",a);
-
-  //printf("olha o resultado aqui ó --> %lf", a);
 
   //printf("\nO resultado é: %s", numeroFinal);
 
