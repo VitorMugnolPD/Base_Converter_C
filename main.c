@@ -12,25 +12,24 @@ void separarPorVirgula(char numero[MAX])
 {
   int indice=0;
 
-  while(numero[indice]!=',' && numero[indice]!='\0')
+  while((numero[indice]!=',' && numero[indice]!='.' )&& numero[indice]!='\0')
   {
     antesVirgula[indice] = numero[indice];  
     indice = indice + 1;
   }
   
-  if(numero[indice]==',')
+  if(numero[indice]==',' || numero[indice]=='.')
   {
     int indiceAuxiliar=0;
     indice++;
     
-    while(depoisVirgula[indiceAuxiliar]!='\0')
+    while(numero[indice]!='\0')
     {
       depoisVirgula[indiceAuxiliar] = numero[indice]; 
       indice++;
       indiceAuxiliar++;
     }
   }
-
 }
 
 char getLetra(int numero)
@@ -48,74 +47,67 @@ int getNumero(char letra)
   }
 }
 
-double algumaParaDezAntes(char* numero, int base)
+double algumaParaDezAntes(char* numero, int base, int tamanho)
 {
   double ret = 0;
-  char nmr[MAX] = {numero};
-  int tamanho = (int) sizeof(nmr) / sizeof(nmr[0]);
+ // printf("%s\n",base);
+  //int tamanho = (int) sizeof(nmr) / sizeof(nmr[0]);
   int indice;
   for(indice = 0; indice < tamanho; indice++)
   {
-    if(isdigit(nmr[indice]))
+    if(isdigit(numero[indice]))
     {
-      ret = ret + (double) (nmr[indice] * pow(base, tamanho - indice));
+      ret = ret + (double) ((numero[indice]-48) * pow(base, tamanho - indice-1));
+     // printf("\nbatata: %lf",ret);
+     // printf("\nteste: %i",tamanho);
     }
     else
     {
-      int n = getNumero(nmr[indice]);
-      ret = ret + (double) (n * pow(base, tamanho - indice));
+      
+      int n = getNumero(numero[indice]);
+      ret = ret + (double) (n * pow(base, tamanho - indice-1));
     }
+    //printf("\n%lf",ret);
   }
   return ret;
 }
 
-double algumaParaDezDepois(char* numero, int base)
+double algumaParaDezDepois(char* numero, int base, int tamanho)
 {
   double ret = 0;
-  char nmr[MAX] = {numero};
-  int tamanho = (int) sizeof(nmr) / sizeof(nmr[0]);
+  //char nmr[MAX] = {numero};
+  //int tamanho = (int) sizeof(nmr) / sizeof(nmr[0]);
   int indice;
   for(indice = 0; indice < tamanho; indice++)
   {
-    if(isdigit(nmr[indice]))
+    if(isdigit(numero[indice]))
     {
-      ret = ret + (double) (nmr[indice] * (1 / pow(base, indice + 1)));
+      ret = ret + (double) ((numero[indice]-48) * (1 / pow(base, indice + 1)));
+       int a =0;
     }
     else
     {
-      int n = getNumero(nmr[indice]);
+      int n = getNumero(numero[indice]);
       ret = ret + (double) (n * (1 / pow(base, indice + 1)));
+       int a =0;
     }
   }
   return ret;
 }
 
-double algumaParaDez(char numeroAntes[MAX],char numeroDepois[MAX], int baseInicial)
+double algumaParaDez(char *numeroAntes,char *numeroDepois, int baseInicial,int tamanhoAntes,int tamanhoDepois)
 {
   
-  double antes = algumaParaDezAntes(numeroAntes, baseInicial);
 
-  printf("%lf",antes);
+  double antes = algumaParaDezAntes(numeroAntes, baseInicial, tamanhoAntes);
 
-  double depois = algumaParaDezDepois(numeroDepois, baseInicial);
+  double depois = algumaParaDezDepois(numeroDepois, baseInicial, tamanhoDepois);
 
-  char n[MAX];
-  strcat(n, (char[]) {antes});
-  strcat(n, '.');
-  strcat(n, (char[]) {depois});
-  return (double) *n;
+  double n = antes+depois;
+  
+  return n;
 }
 
-/*double dezParaOutraAntes(double numero, int baseFinal)
-{
-  double nmr = numero;
-  char ret[MAX] = "";
-  while(nmr != 0)
-  {
-    char n = (char[]) {nmr};
-    int tamanho = (int) (sizeof(n) / sizeof(n[0]));
-  }
-}*/
 
 //double dezParaOutra(double numero, int baseFinal)
 //{
@@ -127,21 +119,33 @@ double algumaParaDez(char numeroAntes[MAX],char numeroDepois[MAX], int baseInici
 int main()
 { 
   char numeroInicial[MAX], numeroFinal;
-  unsigned int baseInicial, baseFinal;
+  unsigned int baseInicial=0, baseFinal=0;
 
   printf("\nDigite o numero desejado: ");
-  fgets(numeroInicial, MAX, stdin);
+  scanf("%s",&numeroInicial);
+  fflush(stdin);
 
   printf("\nDigite a base inicial: ");
-  scanf("%u",&baseInicial);
-
+  scanf("%i",&baseInicial);
+  fflush(stdin);
+  fflush(stdout);
   printf("\nDigite a base final: ");
   scanf("%u",&baseFinal);
   fflush(stdin);
 
-  printf("%s", &numeroInicial);
+  //printf("mr potato head: %u\n", baseInicial);
+ // printf("mr batata cabeça: %s\n",numeroInicial);
 
-  algumaParaDez(antesVirgula,depoisVirgula,baseInicial);
+  separarPorVirgula(numeroInicial);
+
+  int tamanhoAntes = strlen(antesVirgula);
+
+  int tamanhoDepois = strlen(depoisVirgula);
+
+  double a = algumaParaDez(antesVirgula,depoisVirgula,baseInicial,tamanhoAntes,tamanhoDepois);
+  printf("%lf",a);
+
+  //printf("olha o resultado aqui ó --> %lf", a);
 
   //printf("\nO resultado é: %s", numeroFinal);
 
