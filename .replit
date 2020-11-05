@@ -1,2 +1,2 @@
 language = "c"
-run = "clear\ngcc -g main.c -o main -lm\n clear"
+run = "clear\ngcc -g main.c -o main -lm\n ./main"
